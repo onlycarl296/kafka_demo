@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service;
 public class MessageService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private EmailService emailService;
-
-    @KafkaListener(id = "notificationGroup", topics = "notification")
-    public void listen(MessageDTO messageDTO) {
-        logger.info("Received: ", messageDTO.getTo());
-        emailService.sendEmail(messageDTO);
+    @KafkaListener(topics = "notification",
+            groupId = "group_id") // Khai báo rằng với topic này thì sẽ cụm consumer với group_id như ở đây phân chia để xác định consumer nào nhận partition nào
+    // Method
+    public void
+    consume(String message)
+    {
+        // Print statement
+        System.out.println("message = " + message);
     }
 
 }
