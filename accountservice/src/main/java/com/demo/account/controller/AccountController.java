@@ -3,6 +3,9 @@ package com.demo.account.controller;
 import com.demo.account.model.AccountDTO;
 import com.demo.account.model.MessageDTO;
 import com.demo.account.model.StatisticDTO;
+import com.demo.account.repo.AccountRepo;
+import com.demo.account.repo.MessageRepo;
+import com.demo.account.repo.StatisticRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +21,14 @@ public class AccountController {
     @Autowired
     KafkaTemplate<String, Object> kafkaTemplate;
 
-//    @Autowired
-//    AccountRepo accountRepo;
-//
-//    @Autowired
-//    MessageRepo messageRepo;
-//
-//    @Autowired
-//    StatisticRepo statisticRepo;
+    @Autowired
+    AccountRepo accountRepo;
+
+    @Autowired
+    MessageRepo messageRepo;
+
+    @Autowired
+    StatisticRepo statisticRepo;
 
     @PostMapping("/new")
     public AccountDTO create(@RequestBody AccountDTO account) {
@@ -40,9 +43,9 @@ public class AccountController {
         messageDTO.setContent("JMaster is online learning platform.");
         messageDTO.setStatus(false);
 
-//        accountRepo.save(account);
-//        messageRepo.save(messageDTO);
-//        statisticRepo.save(stat);
+        accountRepo.save(account);
+        messageRepo.save(messageDTO);
+        statisticRepo.save(stat);
 
         kafkaTemplate.send("notification", messageDTO);
         kafkaTemplate.send("statistic", stat);
